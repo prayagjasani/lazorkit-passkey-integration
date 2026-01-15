@@ -11,7 +11,6 @@ import { Connection, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import SendModal from './SendModal';
 import ReceiveModal from './ReceiveModal';
-import CryptoLogo from './CryptoLogo';
 
 interface TokenBalance {
   mint: string;
@@ -26,6 +25,67 @@ const KNOWN_TOKENS: { [mint: string]: { symbol: string; name: string } } = {
   'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGkZwyTDt1v': { symbol: 'USDC', name: 'USD Coin' },
   'Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr': { symbol: 'USDC', name: 'USD Coin' }, // Devnet USDC
 };
+
+/**
+ * Crypto Logo Component
+ * Displays cryptocurrency logos using LogoKit API
+ */
+interface CryptoLogoProps {
+  symbol: string;
+  size?: number;
+  className?: string;
+  fallback?: 'monogram' | 'monogram-light' | '404';
+}
+
+export function CryptoLogo({ 
+  symbol, 
+  size = 40, 
+  className = '',
+  fallback = 'monogram-light'
+}: CryptoLogoProps) {
+  const [imageError, setImageError] = useState(false);
+  
+  // LogoKit API token - uses environment variable or default key
+  const apiToken = process.env.NEXT_PUBLIC_LOGOKIT_TOKEN || 'pk_fr2d881ac7d746e85acb17';
+  
+  // Build the URL - token is optional (free tier works without it)
+  const logoUrl = apiToken 
+    ? `https://img.logokit.com/crypto/${symbol}?token=${apiToken}&size=${size}&fallback=${fallback}`
+    : `https://img.logokit.com/crypto/${symbol}?size=${size}&fallback=${fallback}`;
+
+  if (imageError) {
+    // Fallback to a simple colored circle if image fails to load
+    const gradientColors: { [key: string]: string } = {
+      'SOL': 'linear-gradient(135deg, #14F195 0%, #9945FF 100%)',
+      'USDC': 'linear-gradient(135deg, #2775CA 0%, #1EA0F1 100%)',
+    };
+    const gradient = gradientColors[symbol] || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    
+    return (
+      <div 
+        className={`rounded-full flex items-center justify-center text-white font-semibold ${className}`}
+        style={{ 
+          width: size, 
+          height: size,
+          background: gradient,
+          fontSize: `${size * 0.35}px`
+        }}
+      >
+        {symbol.slice(0, 3)}
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={logoUrl}
+      alt={`${symbol} logo`}
+      className={`rounded-full ${className}`}
+      style={{ width: size, height: size }}
+      onError={() => setImageError(true)}
+    />
+  );
+}
 
 export default function WalletDashboard() {
   const { smartWalletPubkey, isConnected, disconnect } = useWallet();

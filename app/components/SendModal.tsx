@@ -17,7 +17,7 @@ import {
   ASSOCIATED_TOKEN_PROGRAM_ID 
 } from '@solana/spl-token';
 import { Connection } from '@solana/web3.js';
-import CryptoLogo from './CryptoLogo';
+import { CryptoLogo } from './WalletDashboard';
 
 interface TokenBalance {
   mint: string;
