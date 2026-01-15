@@ -66,7 +66,14 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
       return false;
     }
     try {
-      new PublicKey(address);
+      const recipientPubkey = new PublicKey(address);
+      
+      // Check if recipient is the same as sender
+      if (smartWalletPubkey && recipientPubkey.equals(smartWalletPubkey)) {
+        setRecipientError('Cannot send to your own wallet address');
+        return false;
+      }
+      
       setRecipientError(null);
       return true;
     } catch {
@@ -128,6 +135,13 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
 
     try {
       const recipientPubkey = new PublicKey(recipient);
+      
+      // Double-check recipient is not the same as sender (should be caught by validation, but extra safety)
+      if (smartWalletPubkey && recipientPubkey.equals(smartWalletPubkey)) {
+        setError('Cannot send to your own wallet address');
+        return;
+      }
+      
       const fromPubkey = smartWalletPubkey;
       let instructions: any[] = [];
 
