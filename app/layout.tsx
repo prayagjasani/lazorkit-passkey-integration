@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Lazorkit Passkey Demo',
   description: 'Example repository demonstrating Lazorkit SDK with passkey authentication and transactions with optional fee sponsorship',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
