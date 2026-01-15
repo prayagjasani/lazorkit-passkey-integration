@@ -66,14 +66,7 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
       return false;
     }
     try {
-      const recipientPubkey = new PublicKey(address);
-      
-      // Check if recipient is the same as sender
-      if (smartWalletPubkey && recipientPubkey.equals(smartWalletPubkey)) {
-        setRecipientError('Cannot send to your own wallet address');
-        return false;
-      }
-      
+      new PublicKey(address);
       setRecipientError(null);
       return true;
     } catch {
@@ -135,13 +128,6 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
 
     try {
       const recipientPubkey = new PublicKey(recipient);
-      
-      // Double-check recipient is not the same as sender (should be caught by validation, but extra safety)
-      if (smartWalletPubkey && recipientPubkey.equals(smartWalletPubkey)) {
-        setError('Cannot send to your own wallet address');
-        return;
-      }
-      
       const fromPubkey = smartWalletPubkey;
       let instructions: any[] = [];
 
@@ -211,19 +197,7 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
       setRecipient('');
       setAmount('');
     } catch (err) {
-      // Provide more detailed error messages
-      let errorMessage = 'Transaction failed';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-        // Check for common Solana errors
-        if (err.message.includes('0x2') || err.message.includes('InsufficientFunds')) {
-          errorMessage = 'Insufficient funds. Please ensure you have enough SOL to cover the transfer and transaction fees.';
-        } else if (err.message.includes('custom program error')) {
-          errorMessage = `Transaction failed: ${err.message}. This may be due to insufficient funds or network issues.`;
-        }
-      }
-      setError(errorMessage);
-      console.error('Transaction error:', err);
+      setError(err instanceof Error ? err.message : 'Transaction failed');
     } finally {
       setLoading(false);
     }
