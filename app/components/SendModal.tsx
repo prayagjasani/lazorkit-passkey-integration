@@ -197,7 +197,19 @@ export default function SendModal({ isOpen, onClose, balance, tokenBalances }: S
       setRecipient('');
       setAmount('');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Transaction failed');
+      // Provide more detailed error messages
+      let errorMessage = 'Transaction failed';
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        // Check for common Solana errors
+        if (err.message.includes('0x2') || err.message.includes('InsufficientFunds')) {
+          errorMessage = 'Insufficient funds. Please ensure you have enough SOL to cover the transfer and transaction fees.';
+        } else if (err.message.includes('custom program error')) {
+          errorMessage = `Transaction failed: ${err.message}. This may be due to insufficient funds or network issues.`;
+        }
+      }
+      setError(errorMessage);
+      console.error('Transaction error:', err);
     } finally {
       setLoading(false);
     }
