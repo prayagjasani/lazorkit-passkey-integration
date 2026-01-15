@@ -11,7 +11,7 @@ import { Buffer } from 'buffer';
 
 const LAZORKIT_CONFIG = {
   rpcUrl: 'https://api.devnet.solana.com',
-  portalUrl: process.env.NEXT_PUBLIC_LAZORKIT_PORTAL_URL || 'https://portal.lazor.sh',
+  portalUrl: 'https://portal.lazor.sh',
   paymasterConfig: {
     paymasterUrl: 'https://kora.devnet.lazorkit.com',
   },
