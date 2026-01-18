@@ -793,12 +793,6 @@ This repository is maintained as a reference implementation for LazorKit SDK int
 - [Solana Documentation](https://docs.solana.com/)
 - [WebAuthn Specification](https://www.w3.org/TR/webauthn-2/)
 
-### Related Projects
-
-- [Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)
-- [Jupiter Aggregator](https://docs.jup.ag/)
-- [Next.js Documentation](https://nextjs.org/docs)
-
 ### Community
 
 - [LazorKit Telegram](https://t.me/lazorkit)
