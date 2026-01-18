@@ -63,6 +63,15 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Button cursor pointer */
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -86,4 +95,34 @@ body {
 ::selection {
   background: rgba(116, 84, 247, 0.2);
   color: #000000;
+}
+
+/* Rotating text animation */
+.rotating-text {
+  display: inline-flex;
+  position: relative;
+  height: 1.2em;
+}
+
+.rotating-text .word {
+  position: absolute;
+  display: flex;
+  opacity: 0;
+}
+
+.rotating-text .word .letter {
+  transform-origin: center center 25px;
+}
+
+.rotating-text .word .letter.out {
+  transform: rotateX(90deg);
+  transition: 0.32s cubic-bezier(0.6, 0, 0.7, 0.2);
+}
+
+.rotating-text .word .letter.in {
+  transition: 0.38s ease;
+}
+
+.rotating-text .word .letter.behind {
+  transform: rotateX(-90deg);
 }

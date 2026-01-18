@@ -15,4 +15,3 @@ export * from "./rpc";
 export * from "@/features/transfer/services";
 export * from "@/features/session/services";
 export * from "@/features/staking/services";
-export * from "@/features/swap/services";

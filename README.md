@@ -56,7 +56,6 @@ Built with modern best practices, this repository provides clean, well-documente
 
 ### Token Management
 - **SOL & USDC transfers** with validation and error handling
-- **Token swapping** via Jupiter Aggregator (mainnet)
 - **SOL staking** with validator delegation
 - **Balance tracking** with real-time updates
 
@@ -211,7 +210,6 @@ passpay-web/
 │   ├── (dashboard)/              # Protected dashboard routes
 │   │   ├── manage/               # Wallet overview
 │   │   ├── transfer/             # Send SOL/USDC
-│   │   ├── swap/                 # Token swapping
 │   │   ├── stake/                # SOL staking
 │   │   ├── receive/              # Receive tokens
 │   │   ├── tutorials/            # Interactive tutorials
@@ -245,7 +243,6 @@ passpay-web/
 │   │   │   └── useUsdcTransfer.ts # USDC transfer hook
 │   │   └── services/
 │   │       └── transfer.service.ts # Transfer logic
-│   ├── swap/                    # Token swapping
 │   ├── staking/                 # Staking operations
 │   └── session/                 # Session management
 │       ├── hooks/
@@ -711,7 +708,6 @@ export default function SessionDemoPage() {
 
 ### Additional Integrations
 
-- **Jupiter Aggregator** - Token swapping (mainnet only)
 - **Solana Stake Program** - SOL staking with validator delegation
 - **SPL Token Program** - USDC and other token transfers
 - **React Hot Toast** - User feedback and notifications
@@ -727,7 +723,6 @@ The demo is deployed on Solana Devnet and includes:
 
 - Passkey wallet creation
 - Gasless SOL and USDC transfers
-- Token swapping interface
 - SOL staking functionality
 - Session persistence demo
 - Interactive tutorials

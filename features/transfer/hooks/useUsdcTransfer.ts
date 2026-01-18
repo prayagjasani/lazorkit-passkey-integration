@@ -85,10 +85,9 @@ export function useUsdcTransfer(): UseUsdcTransferReturn {
       }
 
       try {
-        const { PublicKey } = await import("@solana/web3.js");
-        const fromPubkey = new PublicKey(smartWalletPubkey);
+        // smartWalletPubkey is already a PublicKey object, use it directly
         const instruction = await createUsdcTransferInstruction(
-          fromPubkey,
+          smartWalletPubkey,
           recipientPubkey,
           amountValue
         );

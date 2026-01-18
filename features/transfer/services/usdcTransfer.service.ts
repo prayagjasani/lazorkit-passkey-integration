@@ -86,6 +86,36 @@ export async function createUsdcTransferInstruction(
 ): Promise<TransactionInstruction> {
   const mintPublicKey = new PublicKey(USDC_MINT);
 
+  // Ensure fromPubkey is a valid PublicKey instance
+  // Handle both PublicKey objects and string addresses
+  let fromPubkeyInstance: PublicKey;
+  try {
+    if (fromPubkey instanceof PublicKey) {
+      fromPubkeyInstance = fromPubkey;
+    } else if (typeof fromPubkey === "string") {
+      fromPubkeyInstance = new PublicKey(fromPubkey);
+    } else {
+      // If it has a toBase58 method, it's likely a PublicKey-like object
+      fromPubkeyInstance = new PublicKey((fromPubkey as any).toBase58?.() || String(fromPubkey));
+    }
+  } catch (error) {
+    throw new Error(`Invalid sender public key: ${error instanceof Error ? error.message : "Unknown error"}`);
+  }
+
+  // Ensure toPubkey is a valid PublicKey instance
+  let toPubkeyInstance: PublicKey;
+  try {
+    if (toPubkey instanceof PublicKey) {
+      toPubkeyInstance = toPubkey;
+    } else if (typeof toPubkey === "string") {
+      toPubkeyInstance = new PublicKey(toPubkey);
+    } else {
+      toPubkeyInstance = new PublicKey((toPubkey as any).toBase58?.() || String(toPubkey));
+    }
+  } catch (error) {
+    throw new Error(`Invalid recipient public key: ${error instanceof Error ? error.message : "Unknown error"}`);
+  }
+
   /**
    * Get Associated Token Account addresses
    * 
@@ -100,18 +130,27 @@ export async function createUsdcTransferInstruction(
    * - getAssociatedTokenAddress() handles this derivation
    * - Returns the same address every time (deterministic)
    * 
+   * NOTE ON ALLOW_OWNER_OFF_CURVE:
+   * - LazorKit smart wallets are PDAs (Program Derived Addresses) which are off-curve
+   * - Must set allowOwnerOffCurve: true to work with smart wallets
+   * - Regular wallets are on-curve, but this flag works for both
+   * 
    * NOTE: This function doesn't create the ATA, just gets the address.
    * If the ATA doesn't exist, the transfer will fail.
    * Consider adding ATA creation instruction if needed.
    */
   const fromTokenAccount = await getAssociatedTokenAddress(
     mintPublicKey, // USDC mint address
-    fromPubkey    // Sender's wallet
+    fromPubkeyInstance, // Sender's wallet (LazorKit smart wallet is a PDA/off-curve)
+    true // allowOwnerOffCurve - true because smart wallets are PDAs
   );
 
+  // For recipient, check if it's off-curve (could be another smart wallet)
+  // Set allowOwnerOffCurve to true to handle both cases
   const toTokenAccount = await getAssociatedTokenAddress(
     mintPublicKey, // USDC mint address
-    toPubkey       // Recipient's wallet
+    toPubkeyInstance, // Recipient's wallet
+    true // allowOwnerOffCurve - true to support both regular wallets and PDAs
   );
 
   /**
@@ -157,7 +196,7 @@ export async function createUsdcTransferInstruction(
   return createTransferInstruction(
     fromTokenAccount, // source
     toTokenAccount, // destination
-    fromPubkey, // owner
+    fromPubkeyInstance, // owner
     amountInSmallestUnit, // amount in smallest unit (micro-USDC)
     [], // multiSigners
     TOKEN_PROGRAM_ID // token program

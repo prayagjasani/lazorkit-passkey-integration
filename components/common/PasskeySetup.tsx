@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useWallet } from "@lazorkit/wallet";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { encryptLocal } from "@/lib/utils";
+import { SpotlightButton } from "@/components/common/SpotlightButton";
 import toast from "react-hot-toast";
 
 /**
@@ -154,29 +154,25 @@ export function PasskeySetup({
   return (
     <Card>
       <CardHeader>
-        <h2 className="text-lg font-semibold text-black text-center">Passkey Wallet</h2>
-        <p className="text-sm text-[#8e8e93] mt-1 text-center">
-          No seed phrases. Just your biometrics.
-        </p>
+        <h2 className="text-lg font-semibold text-black text-center">Your Smart Passkey Wallet</h2>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
-          <Button
+          <SpotlightButton
             onClick={handleConnect}
             disabled={isConnecting}
-            className="w-full"
           >
-            {isConnecting ? "Connecting..." : "Continue with Passkey"}
-          </Button>
+            {isConnecting ? "Connecting" : "Continue"}
+          </SpotlightButton>
           <p className="text-xs text-[#8e8e93] text-center">
-            Powered by LazorKit - Your device is your wallet
+            Powered by LazorKit
           </p>
         </div>
         {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
         {wallet?.smartWallet && (
           <div className="mt-4 p-4 rounded-xl bg-[#7454f7]/10 border border-[#7454f7]/20">
             <p className="text-sm text-[#7454f7] font-semibold">
-              ✓ Wallet Created!
+              Wallet Created
             </p>
             <p className="text-xs text-[#8e8e93] mt-1 font-mono break-all">
               {wallet.smartWallet}

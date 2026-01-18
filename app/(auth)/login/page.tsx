@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PasskeySetup } from "@/components";
 import { Logo } from "@/components";
+import { RotatingText } from "@/components/common/RotatingText";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,6 +12,14 @@ export default function LoginPage() {
     void walletAddress; // Used implicitly for routing
     router.push("/manage");
   }
+
+  const rotatingWords = [
+    "Secure",
+    "Fast",
+    "Gasless",
+    "Simple",
+    "Modern",
+  ];
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-white via-[#f2f2f7] to-white">
@@ -21,62 +30,32 @@ export default function LoginPage() {
             <Logo size={28} showText />
           </Link>
           <Link href="/" className="text-sm text-[#8e8e93] hover:text-black">
-            ← Back
+            Back
           </Link>
         </div>
       </nav>
 
       {/* Main Content - Split Layout */}
       <div className="flex flex-1 items-center justify-center px-4 py-12">
-        <div className="w-full max-w-5xl grid md:grid-cols-2 gap-12 items-center">
-          {/* Left Side - Content */}
-          <div className="space-y-6">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-semibold text-black tracking-tight mb-4">
-                Welcome to
-                <br />
-                <span className="text-[#7454f7]">LazorKey</span>
-              </h1>
-              <p className="text-lg text-[#8e8e93] leading-relaxed">
-                Create your Solana wallet in seconds using your device&apos;s biometric authentication. 
-                No passwords, no seed phrases.
-              </p>
-            </div>
-
-            {/* Benefits List */}
-            <div className="space-y-4 pt-4">
-              <div className="flex items-start gap-3">
-                <div className="mt-1 h-5 w-5 rounded-full bg-[#7454f7] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <div>
-                  <p className="font-medium text-black">Biometric Security</p>
-                  <p className="text-sm text-[#8e8e93]">Face ID, Touch ID, or Windows Hello</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 h-5 w-5 rounded-full bg-[#7454f7] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <div>
-                  <p className="font-medium text-black">Zero Gas Fees</p>
-                  <p className="text-sm text-[#8e8e93]">All transactions are gasless</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="mt-1 h-5 w-5 rounded-full bg-[#7454f7] flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-xs">✓</span>
-                </div>
-                <div>
-                  <p className="font-medium text-black">Instant Setup</p>
-                  <p className="text-sm text-[#8e8e93]">Get started in under 30 seconds</p>
-                </div>
-              </div>
+        <div className="w-full max-w-6xl grid md:grid-cols-2 gap-16 items-center">
+          {/* Left Side - Welcome with Rotating Text */}
+          <div className="flex flex-col items-start justify-center">
+            <h1 className="text-5xl md:text-6xl font-semibold text-black tracking-tight mb-8">
+              Welcome to{" "}
+              <span className="text-[#7454f7]">LazorKey</span>
+            </h1>
+            <div className="text-3xl md:text-4xl text-black leading-relaxed">
+              Your wallet is now {" "}
+              <RotatingText
+                words={rotatingWords}
+                className="text-[#7454f7] font-semibold"
+                duration={1500}
+              />{" "}
             </div>
           </div>
 
-          {/* Right Side - Passkey Setup */}
-          <div className="space-y-4">
+          {/* Right Side - Login Box */}
+          <div className="space-y-6">
             <PasskeySetup onConnected={handleConnected} />
 
             {/* Security Note */}
@@ -87,7 +66,8 @@ export default function LoginPage() {
                     Your keys, your control
                   </p>
                   <p className="text-xs text-[#7454f7]/70 leading-relaxed">
-                    Private keys are stored securely in your device&apos;s hardware. 
+                    Private keys are stored securely in your device hardware. 
+                    Powered by LazorKit - Your device is your wallet.
                   </p>
                 </div>
               </div>

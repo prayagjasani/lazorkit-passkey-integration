@@ -63,4 +63,4 @@ export const DEFAULT_CONFIG = {
  * - Could support other stablecoins (USDT, etc.)
  * - Could allow users to choose which token to use for fees
  */
-export const USDC_MINT = "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr";
+export const USDC_MINT = "4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU";
